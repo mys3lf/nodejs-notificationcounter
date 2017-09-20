@@ -51,9 +51,7 @@ app.get('/notifications/:userId', function (req, res) {
         res.send(400, 'Missing User Id!');
     }
 }).put('/notification/:userId/:targetId/:type', function (req, res) {
-    if (req.query.userId != null &&
-        req.query.targetId != null &&
-        req.query.type != null) {
+    if (req.query.userId != null && req.query.targetId != null && req.query.type != null) {
             if(pool.query('SELECT Count(*) FROM notifications WHERE userId=? targetId=? type=? )' ,[req.params.userId,req.params.targetId,req.params.type])) {
                 pool.query('UPDATE notifications' + 
                            'SET value = value + 1' +
@@ -64,6 +62,7 @@ app.get('/notifications/:userId', function (req, res) {
                                     res.send(500, 'SQL ERROR: UPDATE faild!');
                                     throw error;
                                 }
+
                                 res.send(201, 'Success');
                             }
                 );
@@ -75,6 +74,7 @@ app.get('/notifications/:userId', function (req, res) {
                                     res.send(500, 'SQL ERROR: INSERT INTO faild!');
                                     throw error;
                                 }
+                                
                                 res.send(201, 'Success');
                             })
             }
@@ -82,11 +82,17 @@ app.get('/notifications/:userId', function (req, res) {
         res.send(400, 'Missing Parameter!');
     }
 }).delete('/notification/:userId/:targetId/:type', function (req, res) {
-    if (req.query.userId != null &&
-        req.query.targetId != null &&
-        req.query.type != null) {
+    if (req.query.userId != null && req.query.targetId != null && req.query.type != null) {
             pool.query('DELETE FROM notifications WHERE userId=? targetId=? type=?'
-                    ,[req.params.userId,req.params.targetId,req.params.type]);
+                    ,[req.params.userId,req.params.targetId,req.params.type]
+                    ,(error, result, fields) => {
+                        if (error) {
+                            res.send(500, 'SQL ERROR: INSERT INTO faild!');
+                            throw error;
+                        }
+                    
+                        res.send(201, 'Success');
+                    });
     } else {
         res.send(400, 'Missing Parameter!');
     }
