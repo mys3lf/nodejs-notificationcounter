@@ -54,11 +54,30 @@ app.get('/notifications/:userId', function (req, res) {
     if (req.query.userId != null &&
         req.query.targetId != null &&
         req.query.type != null) {
-            if(pool.query(
-                'SELECT Count(*) FROM notifications WHERE userId=? targetId=? type=? )'
-                ,[req.params.userId,req.params.targetId,req.params.type])) {
-                
-                }
+            if(pool.query('SELECT Count(*) FROM notifications WHERE userId=? targetId=? type=? )' ,[req.params.userId,req.params.targetId,req.params.type])) {
+                pool.query('UPDATE notifications' + 
+                           'SET value = value + 1' +
+                           'WHERE userId=? targetId=? type=? )' 
+                           ,[req.params.userId,req.params.targetId,req.params.type],
+                            (error, result, fields) => {
+                                if (error) {
+                                    res.send(500, 'SQL ERROR: UPDATE faild!');
+                                    throw error;
+                                }
+                                res.send(201, 'Success');
+                            }
+                );
+            } else {
+                pool.query('INSERT INTO notifications (userId, targetId, type)' +
+                           'VALUES (' + req.params.userId + req.params.targetId + req.params.type + ')'
+                           ,(error, result, fields) => {
+                                if (error) {
+                                    res.send(500, 'SQL ERROR: INSERT INTO faild!');
+                                    throw error;
+                                }
+                                res.send(201, 'Success');
+                            })
+            }
     } else {
         res.send(400, 'Missing Parameter!');
     }
