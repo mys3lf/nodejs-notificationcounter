@@ -42,12 +42,33 @@ app.get('/notifications/:userId', function (req, res) {
 
         res.json(array);
     }
-    if (req.query.userID != null) {
-        pool.query('SELECT userId, targetId, type, value ' + 
+    if (req.query.userId != null) {
+        pool.query('SELECT , targetId, type, value ' + 
                    'FROM notifications' +
-                   'WHERE userId=' + req.params.userId,
-                   [req.query.type], returnData);
+                   'WHERE =?',
+                   [req.query.userId], returnData);
     } else {
         res.send(400, 'Missing User Id!');
+    }
+}).put('/notification/:userId/:targetId/:type', function (req, res) {
+    if (req.query.userId != null &&
+        req.query.targetId != null &&
+        req.query.type != null) {
+            if(pool.query(
+                'SELECT Count(*) FROM notifications WHERE userId=? targetId=? type=? )'
+                ,[req.params.userId,req.params.targetId,req.params.type])) {
+                
+                }
+    } else {
+        res.send(400, 'Missing Parameter!');
+    }
+}).delete('/notification/:userId/:targetId/:type', function (req, res) {
+    if (req.query.userId != null &&
+        req.query.targetId != null &&
+        req.query.type != null) {
+            pool.query('DELETE FROM notifications WHERE userId=? targetId=? type=?'
+                    ,[req.params.userId,req.params.targetId,req.params.type]);
+    } else {
+        res.send(400, 'Missing Parameter!');
     }
 })
