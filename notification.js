@@ -42,10 +42,12 @@ app.get('/notifications/:userId', function (req, res) {
 
         res.json(array);
     }
-    if (req.query.type != null) {
-    pool.query('SELECT userId, targetId, type, value ' + 
-               'FROM notifications' +
-               'WHERE userId=' + req.params.userId
-                , [req.query.type], returnData);
+    if (req.query.userID != null) {
+        pool.query('SELECT userId, targetId, type, value ' + 
+                   'FROM notifications' +
+                   'WHERE userId=' + req.params.userId,
+                   [req.query.type], returnData);
+    } else {
+        res.send(400, 'Missing User Id!');
     }
 })
