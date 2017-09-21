@@ -1,4 +1,6 @@
 # nodejs-notificationcounter
+Small service for saving notifications for example unread messages or matching information.
+
 
 # MySQL Table
 Tablename : notifications
