@@ -17,7 +17,6 @@ var server = app
         console.log("Server listing at http://", host, port)
     });
 
-
 app.get('/notifications/userId/:userId', function (req, res) {
     // Help function for preparing query results for response json
     function returnData(error, results, fields) {
