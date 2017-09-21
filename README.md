@@ -12,12 +12,17 @@ Tablename : notifications
 
 
 # REST CALL's
-
+>
 > GET /notifications/userId/:userId
+>
 get all notifications of the user with ":userId"
 
+>
 > PUT /notifications/userId/:userId/targetId/:targetId/type/:type
+>
 adds or updates notification of the user ":userId" with the chatId ":targetId" with notification type ":type"
 
+>
 > DELETE /notifications/userId/:userId/targetId/:targetId/type/:type
+>
 deletes notification of the user ":userId" with the chatId ":targetId" with notification type ":type" (for example after reading chat)
