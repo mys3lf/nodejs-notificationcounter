@@ -19,7 +19,6 @@ var server = app
 
 
 app.get('/notifications/userId/:userId', function (req, res) {
-    console.log("GET PARAMETER");
     // Help function for preparing query results for response json
     function returnData(error, results, fields) {
         if (error) throw error;
@@ -53,8 +52,7 @@ app.get('/notifications/userId/:userId', function (req, res) {
     }
 });
 
-app.post('/notifications/userId/:userId/targetId/:targetId/type/:type', function (req, res) {
-    console.log("POST PARAMETER");
+app.put('/notifications/userId/:userId/targetId/:targetId/type/:type', function (req, res) {
     if (req.params.userId != null && req.params.targetId != null && req.params.type != null) {   
         pool.query('SELECT COUNT(*) AS count FROM notifications WHERE userId=? AND targetId=? AND type=?' ,
                     [req.params.userId,req.params.targetId,req.params.type],
@@ -93,7 +91,6 @@ app.post('/notifications/userId/:userId/targetId/:targetId/type/:type', function
 });
 
 app.delete('/notifications/userId/:userId/targetId/:targetId/type/:type', function (req, res) {
-    console.log("DELETE PARAMETER");
     if (req.params.userId != null && req.params.targetId != null && req.params.type != null) { 
             // Delete requested entry
             pool.query('DELETE FROM notifications WHERE userId=? AND targetId=? AND type=?'
