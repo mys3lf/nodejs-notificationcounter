@@ -1,62 +1,33 @@
 # nodejs-notificationcounter
+Small service for saving notifications for example unread messages or matching information.
 
 
-GET Data:
-> {
-> 	"user-id": "user-id",
-> 	"notifications": [
-> 		{
-> 			"id": "id",
-> 			"items": [ 
-> 			{
-> 				"type": "chat",
-> 				"value": "1"
-> 			}, 
-> 			{
-> 				"type": "matching",
-> 				"value": "new"
-> 			}
-> 			]
-> 		}
-> 	]
-> }
+# MySQL Table
+Tablename : notifications
 
-PUT /notifications <-- Create user if not exist
-
-> {
->	"user-id": "user-id", 
->	"type": "add" /*add | replace | read*/
->	"notifications": [
->		{
->			"id": "id", 
->			"items": [ /* optional. read to not need items*/
->			{
->				"type": "chat",
->				"value": "1"
->			}, 
->			{
->				"type": "matching",
->				"value": "new"
->			}
->			]
->		}
->	] 
-> }
+| Name          | Typ           | Standard      |
+| ------------- | ------------- | ------------- |
+| userId        | varchar(60)   | -             |
+| targetId      | varchar(60)   | -             |
+| type          | varchar(10)   | -             |
+| targetId      | int    (11)   | 1             |
 
 
-Table-Structure
+# REST CALL's
+>
+> GET /notifications/userId/:userId
+>
+Get all notifications of the user with ":userId"
 
-> notifications (Table)
-> id|user-id|notifications-id (columns)
-> 
-> 1|user1|chat_1_2
-> 2|user2|chat_1_2
-> 
-> 
-> notifications_items (Table)
-> id|type|value (columns)
-> 
-> 1|chat|1
-> 1|matching|new
-> 2|chat|4
-> 2|matching|new
+>
+> PUT /notifications/userId/:userId/targetId/:targetId/type/:type
+>
+Adds or updates notification of the user ":userId" with the chatId ":targetId" with notification type ":type"
+
+>
+> DELETE /notifications/userId/:userId/targetId/:targetId/type/:type
+>
+Deletes notification of the user ":userId" with the chatId ":targetId" with notification type ":type" (for example after reading chat)
+
+# License
+MIT
