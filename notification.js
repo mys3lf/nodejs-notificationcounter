@@ -49,12 +49,10 @@ app.get('/notifications/userId/:userId', function (req, res) {
     } else {
         res.status(400).send('Missing User Id!');
     }
-});
-
-app.put('/notifications/userId/:userId/targetId/:targetId/type/:type', function (req, res) {
-    if (req.params.userId != null && req.params.targetId != null && req.params.type != null) {   
+}).put('/notifications/userId/:userId', function (req, res) {
+    if (req.params.userId != null && req.body.targetId != null && req.body.type != null) {   
         pool.query('SELECT COUNT(*) AS count FROM notifications WHERE userId=? AND targetId=? AND type=?' ,
-                    [req.params.userId,req.params.targetId,req.params.type],
+                    [req.params.userId,req.body.targetId,req.body.type],
                     (error, results, fields) => {
                         if (results[0].count) {
                         // If the requested entry exist
@@ -62,7 +60,7 @@ app.put('/notifications/userId/:userId/targetId/:targetId/type/:type', function 
                         pool.query('UPDATE notifications ' + 
                                    'SET value = value + 1 ' +
                                    'WHERE userId=? AND targetId=? AND type=?' 
-                                    ,[req.params.userId,req.params.targetId,req.params.type]
+                                    ,[req.params.userId,req.body.targetId,req.body.type]
                                     ,(error, result, fields) => {
                                         if (error) {
                                             console.error(error);
@@ -74,7 +72,7 @@ app.put('/notifications/userId/:userId/targetId/:targetId/type/:type', function 
                         } else {
                         // Else insert notification into database
                         pool.query('INSERT INTO notifications (userId, targetId, type) ' +
-                                   "VALUES ('" + req.params.userId + "', '" + req.params.targetId + "', '" + req.params.type + "')"
+                                   "VALUES ('" + req.params.userId + "', '" + req.body.targetId + "', '" + req.body.type + "')"
                                     ,(error, result, fields) => {
                                         if (error) {
                                             res.status(500).send('SQL ERROR: INSERT INTO failed!');
@@ -89,11 +87,11 @@ app.put('/notifications/userId/:userId/targetId/:targetId/type/:type', function 
     }
 });
 
-app.delete('/notifications/userId/:userId/targetId/:targetId/type/:type', function (req, res) {
-    if (req.params.userId != null && req.params.targetId != null && req.params.type != null) { 
+app.delete('/notifications/userId/:userId', function (req, res) {
+    if (req.params.userId != null && req.body.targetId != null && req.body.type != null) { 
             // Delete requested entry
             pool.query('DELETE FROM notifications WHERE userId=? AND targetId=? AND type=?'
-                    ,[req.params.userId,req.params.targetId,req.params.type]
+                    ,[req.params.userId,req.body.targetId,req.body.type]
                     ,(error, result, fields) => {
                         if (error) {
                             res.status(500).send('SQL ERROR: DELETE failed!');

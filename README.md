@@ -20,13 +20,21 @@ Tablename : notifications
 Get all notifications of the user with ":userId"
 
 >
-> PUT /notifications/userId/:userId/targetId/:targetId/type/:type
+> PUT /notifications/userId/:userId
 >
-Adds or updates notification of the user ":userId" with the chatId ":targetId" with notification type ":type"
+Request Data:
+> targetId
+> type
+
+Adds or updates notification of the user ":userId" with the targetId ":targetId" with notification type ":type"
 
 >
-> DELETE /notifications/userId/:userId/targetId/:targetId/type/:type
+> DELETE /notifications/userId/:userId
 >
+Request Data:
+> targetId
+> type
+
 Deletes notification of the user ":userId" with the chatId ":targetId" with notification type ":type" (for example after reading chat)
 
 # License
