@@ -42,3 +42,21 @@ PUT /notifications <-- Create user if not exist
 >		}
 >	] 
 > }
+
+
+Table-Structure
+
+> notifications (Table)
+> id|user-id|notifications-id (columns)
+> 
+> 1|user1|chat_1_2
+> 2|user2|chat_1_2
+> 
+> 
+> notifications_items (Table)
+> id|type|value (columns)
+> 
+> 1|chat|1
+> 1|matching|new
+> 2|chat|4
+> 2|matching|new
