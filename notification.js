@@ -23,7 +23,7 @@ app.get('/notifications/users/:userId', function (req, res) {
         if (error) throw error;
 
         var response = {
-                userId: results[0].userId,
+                userId: req.params.userId,
                 notification: []
             };
 
@@ -71,8 +71,8 @@ app.get('/notifications/users/:userId', function (req, res) {
                             });
                         } else {
                         // Else insert notification into database
-                        pool.query('INSERT INTO notifications (userId, targetId, type) ' +
-                                   "VALUES ('" + req.params.userId + "', '" + req.body.targetId + "', '" + req.body.type + "')"
+                        pool.query('INSERT INTO notifications (userId, targetId, type, value) ' +
+                                   "VALUES ('" + req.params.userId + "', '" + req.body.targetId + "', '" + req.body.type + "', 1)"
                                     ,(error, result, fields) => {
                                         if (error) {
                                             res.status(500).send('SQL ERROR: INSERT INTO failed!');
