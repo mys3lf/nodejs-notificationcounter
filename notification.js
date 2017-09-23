@@ -10,14 +10,14 @@ var server = app
     .use(bodyParser.urlencoded({
         extended: true
     }))
-    .listen(1337, function () {
+    .listen(8084, function () {
         var host = server.address().address
         var port = server.address().port
 
         console.log("Server listing at http://", host, port)
     });
 
-app.get('/notifications/userId/:userId', function (req, res) {
+app.get('/notifications/users/:userId', function (req, res) {
     // Help function for preparing query results for response json
     function returnData(error, results, fields) {
         if (error) throw error;
@@ -49,7 +49,7 @@ app.get('/notifications/userId/:userId', function (req, res) {
     } else {
         res.status(400).send('Missing User Id!');
     }
-}).put('/notifications/userId/:userId', function (req, res) {
+}).put('/notifications/users/:userId', function (req, res) {
     if (req.params.userId != null && req.body.targetId != null && req.body.type != null) {   
         pool.query('SELECT COUNT(*) AS count FROM notifications WHERE userId=? AND targetId=? AND type=?' ,
                     [req.params.userId,req.body.targetId,req.body.type],
@@ -85,9 +85,7 @@ app.get('/notifications/userId/:userId', function (req, res) {
     } else {
         res.send(400, 'Missing Parameter!');
     }
-});
-
-app.delete('/notifications/userId/:userId', function (req, res) {
+}).delete('/notifications/users/:userId', function (req, res) {
     if (req.params.userId != null && req.body.targetId != null && req.body.type != null) { 
             // Delete requested entry
             pool.query('DELETE FROM notifications WHERE userId=? AND targetId=? AND type=?'
